@@ -1,19 +1,46 @@
 pipeline {
   agent any
   stages {
-    stage('Step1') {
-      steps {
-        echo 'Fetching code'
+    stage('Fetch Code') {
+      parallel {
+        stage('Step1') {
+          steps {
+            echo 'Fetching code'
+          }
+        }
+        stage('') {
+          steps {
+            echo 'Clone the git repo'
+          }
+        }
       }
     }
-    stage('Step 2') {
-      steps {
-        echo 'Build The code'
+    stage('Build the code') {
+      parallel {
+        stage('Step 2') {
+          steps {
+            echo 'Build The code'
+          }
+        }
+        stage('') {
+          steps {
+            bat 'javac HelloWorld.java'
+          }
+        }
       }
     }
-    stage('Step 3') {
-      steps {
-        echo 'Deploy'
+    stage('Deploy the code') {
+      parallel {
+        stage('Step 3') {
+          steps {
+            echo 'Deploy'
+          }
+        }
+        stage('') {
+          steps {
+            bat 'java HelloWorld'
+          }
+        }
       }
     }
     stage('Step 4') {
